@@ -1,0 +1,133 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant Bill Calculator</title>
+    <style>
+        #item-list {
+            list-style: none;
+            padding: 0;
+        }
+        #item-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            margin-bottom: 5px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+        #item-list li:hover {
+            background-color: #e0e0e0;
+        }
+        .add-button {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #total {
+            text-align: center;
+            font-size: 40px;
+            color: brown; /* Default color */
+            transition: font-size 0.3s; /* Smooth transition for font size change */
+        }
+    </style>
+</head>
+<body>
+    <h1>Restaurant Bill Calculator</h1>
+    
+    <ul id="item-list">
+        <!-- Render menu items dynamically using JavaScript -->
+    </ul>
+    
+    <ul id="selected-items"></ul>
+    
+    <button onclick="calculateTotal()">Calculate Total</button>
+    <p id="total"></p>
+
+    <script>
+        // Array to store selected items and their quantities
+        let selectedItems = [];
+
+        // Function to add item to the list
+        function addItem(itemName) {
+            const itemQuantity = 1; // Default quantity is 1
+
+            // Check if the item is already in the list
+            const existingItem = selectedItems.find(item => item.name === itemName);
+            if (existingItem) {
+                existingItem.quantity += itemQuantity; // Add to existing quantity
+            } else {
+                selectedItems.push({ name: itemName, quantity: itemQuantity });
+            }
+            displaySelectedItems();
+        }
+
+        // Function to display selected items in the list
+        function displaySelectedItems() {
+            const selectedItemsList = document.getElementById('selected-items');
+            selectedItemsList.innerHTML = ''; // Clear existing list
+
+            selectedItems.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - Quantity: ${item.quantity}`;
+                selectedItemsList.appendChild(li);
+            });
+        }
+
+        // Function to calculate the total bill
+        function calculateTotal() {
+            let total = 0;
+
+            selectedItems.forEach(item => {
+                const selectedItem = menuItems.find(menuItem => menuItem.name === item.name);
+                if (selectedItem) {
+                    total += selectedItem.price * item.quantity;
+                }
+            });
+
+            const totalElement = document.getElementById('total');
+            totalElement.textContent = `Total Bill: $${total}`;
+        }
+
+        // List of menu items with their prices
+        const menuItems = [
+            { name: 'IDLY', price: 8 },
+            { name: 'DOSA', price: 10 },
+            { name: 'CHICKEN 65', price: 6 },
+            { name: 'CHICKEN BIRIYANI', price: 4 },
+            { name: 'NOODLES', price: 12 },
+            { name: 'OMLETTE', price: 15 },
+            { name: 'FISH', price: 9 },
+            { name: 'MUTTON BIRIYANI', price: 11 }
+        ];
+
+        // Populate item list with menuItems
+        const itemList = document.getElementById('item-list');
+        menuItems.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - ${item.price}$`;
+
+            const addButton = document.createElement('button');
+            addButton.textContent = 'Add';
+            addButton.className = 'add-button';
+            addButton.onclick = () => addItem(item.name);
+
+            li.appendChild(addButton);
+            itemList.appendChild(li);
+        });
+
+        // Set background image (replace with a valid URL)
+        document.body.style.backgroundImage = "url('https://media.istockphoto.com/id/478432824/photo/fashion-stylish-restaurant-interior.jpg?s=2048x2048&w=is&k=20&c=vVg2xTZRpzZNnVYaFYS8tEhdCcoajjT7pn79s3iBrdE=')";
+        document.body.style.backgroundSize = "cover";
+        document.body.style.backgroundPosition = "center";
+        document.body.style.backgroundRepeat = "no-repeat";
+    </script>
+</body>
+</html>
